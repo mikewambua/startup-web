@@ -24,6 +24,10 @@ const reducer = (state, action) => {
   }
 };
 
+const [state, dispatch] =
+  (process.env.NODE_ENV === 'development' ? logger(reducer) : reducer,
+  initialState);
+
 export default function Home() {
   const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
     products: [],
