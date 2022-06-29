@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useReducer, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -12,6 +11,7 @@ import SingleProduct from '../components/SingleProduct';
 import Spinner from '../components/Spinner';
 import getError from '../utils/Utils';
 import { LinkContainer } from 'react-router-bootstrap';
+import { axiosInstance } from '../config';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -66,7 +66,7 @@ const SearchPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(
+        const { data } = await axiosInstance.get(
           `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -82,7 +82,7 @@ const SearchPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`/api/products/categories`);
+        const { data } = await axiosInstance.get(`/api/products/categories`);
         setCategories(data);
       } catch (err) {
         toast.error(getError(err));

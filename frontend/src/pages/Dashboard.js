@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { toast } from 'react-toastify';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -39,7 +39,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('/api/orders/summary', {
+        const { data } = await axiosInstance.get('/api/orders/summary', {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         console.log(data);

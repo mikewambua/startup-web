@@ -6,7 +6,7 @@ import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import getError from '../utils/Utils';
 import Spinner from '../components/Spinner';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -45,7 +45,7 @@ const Profile = () => {
         return;
       }
 
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         '/api/users/profile',
         { name, email, password },
         { headers: { authorization: `Bearer ${userInfo.token}` } }

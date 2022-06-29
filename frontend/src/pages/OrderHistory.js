@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Button from 'react-bootstrap/Button';
@@ -38,7 +38,7 @@ const OrderHistory = () => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const { data } = await axios.get('/api/orders/mine', {
+        const { data } = await axiosInstance.get('/api/orders/mine', {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { axiosIntance } from '../config';
 import { Helmet } from 'react-helmet-async';
 import Button from 'react-bootstrap/Button';
 
@@ -52,7 +52,7 @@ const OrderList = () => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get('/api/orders', {
+        const { data } = await axiosInstance.get('/api/orders', {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -70,7 +70,7 @@ const OrderList = () => {
   const deleteHandler = async (order) => {
     try {
       dispatch({ type: 'DELETE_REQUEST' });
-      await axios.delete(`/api/orders/${order._id}`, {
+      await axiosInstance.delete(`/api/orders/${order._id}`, {
         headers: { authorization: `Bearer ${userInfo.token}` },
       });
       toast.success('Order deleted successfully');

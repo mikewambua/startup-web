@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import CheckoutSteps from '../components/CheckoutSteps';
 import getError from '../utils/Utils';
 import { Store } from '../Store';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import Spinner from 'react-bootstrap/esm/Spinner';
 
 const reducer = (state, action) => {
@@ -53,7 +53,7 @@ const PlaceOrder = () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
 
-      const { data } = await axios.post(
+      const { data } = await axiosInstance.post(
         '/api/orders',
         {
           orderItems: cart.cartItems,

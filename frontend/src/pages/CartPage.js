@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
@@ -18,7 +18,7 @@ const Cart = () => {
   } = state;
 
   const updateCart = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/${item._id}`);
+    const { data } = await axiosInstance.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
       return;

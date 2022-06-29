@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { toast } from 'react-toastify';
 import {
   GoogleMap,
@@ -46,7 +46,7 @@ const Map = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get('/api/keys/google', {
+      const { data } = await axiosInstance.get('/api/keys/google', {
         headers: { authorization: `Bearer ${userInfo.token}` },
       });
       setGoogleApiKey(data.key);

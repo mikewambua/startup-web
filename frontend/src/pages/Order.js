@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import Spinner from '../components/Spinner';
 import Message from '../components/Message';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import getError from '../utils/Utils';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -95,7 +95,7 @@ const Order = () => {
     return actions.order.capture().then(async function (details) {
       try {
         dispatch({ type: 'PAY_REQUEST' });
-        const { data } = await axios.put(
+        const { data } = await axiosInstance.put(
           `/api/orders/${order._id}/pay`,
           details,
           {
@@ -119,7 +119,7 @@ const Order = () => {
     const fetchOrder = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/orders/${orderId}`, {
+        const { data } = await axiosInstance.get(`/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -146,9 +146,12 @@ const Order = () => {
     } else {
       const loadPaypalScript = async () => {
         try {
-          const { data: clientId } = await axios.get('/api/keys/paypal', {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          });
+          const { data: clientId } = await axiosInstance.get(
+            '/api/keys/paypal',
+            {
+              headers: { authorization: `Bearer ${userInfo.token}` },
+            }
+          );
           paypalDispatch({
             type: 'resetOptions',
             value: { 'client-id': clientId, currency: 'USD' },
@@ -173,7 +176,7 @@ const Order = () => {
   const deliverOrderHandler = async () => {
     try {
       dispatch({ type: 'DELIVER_REQUEST' });
-      const { data } = axios.put(
+      const { data } = axiosInstance.put(
         `/api/orders/${order._id}/deliver`,
         {},
         {

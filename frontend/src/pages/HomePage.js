@@ -2,12 +2,12 @@ import React, { useEffect, useReducer } from 'react';
 import logger from 'use-reducer-logger';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import axios from 'axios';
 import SingleProduct from '../components/SingleProduct';
 import { Helmet } from 'react-helmet-async';
 import LoadingSpinner from '../components/Spinner';
 import Message from '../components/Message';
 import getError from '../utils/Utils';
+import { axiosInstance } from '../config';
 // import data from '../data'
 
 //Using useReducer Hook
@@ -39,7 +39,7 @@ export default function Home() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get('/api/products');
+        const result = await axiosInstance.get('/api/products');
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });

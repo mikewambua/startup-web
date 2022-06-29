@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import Container from 'react-bootstrap/Container';
@@ -76,7 +76,7 @@ const ProductEdit = () => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_FAIL' });
-        const { data } = await axios.get(`/api/products/${productId}`);
+        const { data } = await axiosInstance.get(`/api/products/${productId}`);
         setTitle(data.title);
         setContent(data.content);
         setSlug(data.slug);
@@ -100,7 +100,7 @@ const ProductEdit = () => {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      await axios.put(
+      await axiosInstance.put(
         `/api/products/${productId}`,
         {
           _id: productId,
@@ -132,7 +132,7 @@ const ProductEdit = () => {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload', bodyFormData, {
+      const { data } = await axiosInstance.post('/api/upload', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,

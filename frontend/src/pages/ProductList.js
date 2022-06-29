@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { toast } from 'react-toastify';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -82,9 +82,12 @@ const ProductList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/products/admin?page=${page}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axiosInstance.get(
+          `/api/products/admin?page=${page}`,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: toast.error(getError(err)) });
@@ -101,7 +104,7 @@ const ProductList = () => {
     if (window.confirm('Are you sure you want to create?')) {
       try {
         dispatch({ type: 'CREATE_REQUEST' });
-        const { data } = await axios.post(
+        const { data } = await axiosInstance.post(
           '/api/products',
           {},
           { headers: { authorization: `Bearer ${userInfo.token}` } }
@@ -119,7 +122,7 @@ const ProductList = () => {
   const deleteHandler = async (product) => {
     if (window.confirm('Are you sure you want to delete?')) {
       try {
-        await axios.delete(`/api/products/${product._id}`, {
+        await axiosInstance.delete(`/api/products/${product._id}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         toast.success('Product deleted successfully');

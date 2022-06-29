@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import Form from 'react-bootstrap/Form';
@@ -57,7 +57,7 @@ const UserEdit = () => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/users/${userId}`, {
+        const { data } = await axiosInstance.get(`/api/users/${userId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         setName(data.name);
@@ -75,7 +75,7 @@ const UserEdit = () => {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/users/${userId}`,
         { _id: userId, name, email, isAdmin },
         { headers: { authorization: `Bearer ${userInfo.token}` } }

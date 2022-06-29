@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -34,7 +34,7 @@ const Signup = () => {
     }
 
     try {
-      const { data } = await axios.post('/api/users/signup', {
+      const { data } = await axiosInstance.post('/api/users/signup', {
         name,
         email,
         password,

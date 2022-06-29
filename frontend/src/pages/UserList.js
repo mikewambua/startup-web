@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import axios from 'axios';
+import { axiosInstance } from '../config';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
@@ -53,7 +53,7 @@ const UserList = () => {
   const deleteHandler = async (user) => {
     try {
       dispatch({ type: 'DELETE_REQUEST' });
-      await axios.delete(`/api/users/${user._id}`, {
+      await axiosInstance.delete(`/api/users/${user._id}`, {
         headers: { authorization: `Bearer ${userInfo.token}` },
       });
       toast.success('User deleted successfully');
@@ -68,7 +68,7 @@ const UserList = () => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get('/api/users', {
+        const { data } = await axiosInstance.get('/api/users', {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
